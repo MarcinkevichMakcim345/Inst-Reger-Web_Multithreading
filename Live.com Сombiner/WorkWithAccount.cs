@@ -263,6 +263,48 @@ namespace Live.com_Сombiner
                     string surfaces_to_queries = $"{{\"{PAGE_TOP}\":\"{viewer},\"{INTERSTITIAL}\":\"{viewer},\"{TOOLTIP}\":\"{viewer}}}";
                     #endregion
 
+                    #region Парсим MID в случае если он не спарсился ранее
+                    if (xmid.Length <= 0)
+                    {
+                        request.AddHeader("Accept", "*/*");
+                        request.AddHeader("X-CSRFToken", csrf_token);
+                        request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
+                        request.AddHeader("X-IG-App-ID", PWAAppId);
+                        request.AddHeader("X-IG-WWW-Claim", "0");
+                        request.AddHeader("X-Requested-With", "XMLHttpRequest");
+                        request.AddHeader("Origin", "https://www.instagram.com");
+                        request.AddHeader("DNT", "1");
+                        request.AddHeader("Referer", "https://www.instagram.com/accounts/emailsignup/");
+
+                        #region Порядок Хэдеров
+                        request.AddHeadersOrder(new List<string>()
+                    {
+                    "Host",
+                    "User-Agent",
+                    "Accept",
+                    "Accept-Language",
+                    "X-CSRFToken",
+                    "X-Instagram-AJAX",
+                    "X-IG-App-ID",
+                    "X-IG-WWW-Claim",
+                    "Content-Type",
+                    "X-Requested-With",
+                    "Origin",
+                    "DNT",
+                    "Connection",
+                    "Referer",
+                    "Cookie",
+                    "Accept-Encoding",
+                    "Content-Length"
+                    });
+                        #endregion
+
+                        Response = request.Get("https://www.instagram.com/data/shared_data/").ToString();
+
+                        xmid = request.Cookies.GetCookieHeader("https://www.instagram.com/data/shared_data/").BetweenOrEmpty("mid=", ";");
+                    }
+                    #endregion
+
                     #region Делаем Post запрос на проверку браузера
                     request.AddHeader("Accept", "*/*");
                     request.AddHeader("X-CSRFToken", csrf_token);

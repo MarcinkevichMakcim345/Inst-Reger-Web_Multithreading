@@ -21,8 +21,8 @@ namespace Live.com_Сombiner
         #region Метод для прочтения всех сообщений
         public static bool ReadMessages((string Email, string Password) Email, string password, HttpRequest request)
         {
-            //try
-            //{
+            try
+            {
                 using (var client = new ImapClient())
                 {
                     if (request.Proxy != null)
@@ -81,10 +81,12 @@ namespace Live.com_Сombiner
                     //for (int i = 0; i < inbox.Count; i++)
                     //    inbox.AddFlags(i, MessageFlags.Seen, false);
                     client.Disconnect(true);
+
+                    SaveData.WriteToLog($"{Email.Email}:{password}", "Прочитали сообщения на почте");
                     return true;
                 }
-            //}
-            //catch { };
+            }
+            catch { };
             SaveData.WriteToLog($"{Email.Email}:{password}", "Не смогли прочитать сообщения на почте");
             return false;
         }
@@ -166,6 +168,7 @@ namespace Live.com_Сombiner
                         Thread.Sleep(PauseOfRequest);
                     }
                     client.Disconnect(true);
+                    SaveData.WriteToLog($"{Email.Email}:{password}", $"Спарсили код {code}");
                     return code;
                 }
             }
