@@ -28,8 +28,7 @@ namespace Live.com_Сombiner
             False,
             UnknownError,
             BlockedAccount,
-            NumberError,
-            NoCookies
+            NumberError
         }
         /// <summary>
         /// Количество аккаунтов для регистрации
@@ -115,11 +114,6 @@ namespace Live.com_Сombiner
                                 SaveData.WriteToLog($"{Email.Email}:{Password}", "Аккаунт не зарегестрирован, попросили номер после капчи.");
                                 SaveData.SaveAccount($"{Email.Email}:{Password}{proxyLog}|{UserAgent}", SaveData.NumberErrorList);
                                 break;
-                            case Status.NoCookies:
-                                SaveData.WriteToLog($"{Email.Email}:{Password}", "Инстаграмм не выдал куки");
-                                UserAgent = GetUserAgent.get();
-                                proxyClient = GetProxy.get();
-                                continue;
                             default:
                                 SaveData.WriteToLog($"{Email.Email}:{Password}", "Неизвестная ошибка, повторяем.");
                                 UserAgent = GetUserAgent.get();
@@ -157,9 +151,7 @@ namespace Live.com_Сombiner
                     request.UseCookies = true;
                     request.Proxy = proxyClient;
                     request.UserAgent = userAgent;
-                    request["Accept-Language"] = "de;q=0.7";
-
-                    MessageBox.Show($"Host: {request.Proxy.Host}, Port: {request.Proxy.Port}");
+                    request["Accept-Language"] = "ru;q=0.9";
 
                     string day = rand.Next(1, 28).ToString();
                     string month = rand.Next(1, 13).ToString();
@@ -191,16 +183,11 @@ namespace Live.com_Сombiner
                     string csrf_token = Response.BetweenOrEmpty("csrf_token\":\"", "\"");
                     string xmid = request.Cookies.GetCookieHeader("Https://www.instagram.com/").BetweenOrEmpty("mid=", ";");
 
-                    if (xmid.Length <= 0)
-                        return (Status.NoCookies, null);
-
                     string[] librarys = Response.BetweenOrEmpty("<link rel=\"manifest\" href=\"/data/manifest.json\">", "<script type=\"text/javascript\">").Split('>');
                     string ConsumerLibCommons = ParseCurrentLibrary(librarys, "ConsumerLibCommons.js");
                     string ConsumerUICommons = ParseCurrentLibrary(librarys, "ConsumerUICommons.js");
                     string Consumer = ParseCurrentLibrary(librarys, "Consumer.js");
                     #endregion
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Перешли на главную страницу");
 
                     #region Делаем Get запрос для парсинга Headers FbAppID. Post INTERSTITIAL, PAGE_TOP, TOOLTIP
                     request.AddHeader("Referer", "https://www.instagram.com/");
@@ -320,8 +307,6 @@ namespace Live.com_Сombiner
                     request.Post("https://www.instagram.com/qp/batch_fetch_web/", UrlParams);
                     #endregion
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Отправили запрос на проверку браузера");
-
                     #region Делаем Get запрос на страницу регистрации
                     request.AddHeader("Accept", "*/*");
                     request.AddHeader("X-IG-App-ID", PWAAppId);
@@ -351,8 +336,6 @@ namespace Live.com_Сombiner
                     Thread.Sleep(rand.Next(minPause, maxPause));
                     request.Get("Https://www.instagram.com/accounts/emailsignup/?__a=1");
                     #endregion
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Перешли на страницу регистрации");
 
                     #region Начинаем отправлять Ajax Запросы на ввод данных для регистрации (Ввели Почту и парсим логин)
                     request.AddHeader("Accept", "*/*");
@@ -400,8 +383,6 @@ namespace Live.com_Сombiner
                     string Login = GetLogin(Response.BetweenOrEmpty("username_suggestions\": [", "]"));
                     #endregion
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели почту.");
-
                     #region Ajax Запросы на ввод данных для регистрации (Ввели Имя и логин)
                     request.AddHeader("Accept", "*/*");
                     request.AddHeader("X-CSRFToken", csrf_token);
@@ -446,8 +427,6 @@ namespace Live.com_Сombiner
 
                     string client_id = request.Cookies.GetCookieHeader("Https://www.instagram.com/accounts/web_create_ajax/attempt/").BetweenOrEmpty("mid=", ";");
                     #endregion
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели Имя и Логин");
 
                     #region Парсим данные для Encrypt Password
                     request.AddHeader("Accept", "*/*");
@@ -536,8 +515,6 @@ namespace Live.com_Сombiner
                     Thread.Sleep(rand.Next(minPause, maxPause));
                     request.Post("Https://www.instagram.com/accounts/web_create_ajax/attempt/", UrlParams);
                     #endregion
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели пароль");
 
                     #region Делаем Post запрос на проверку даты
                     request.AddHeader("Accept", "*/*");
@@ -630,8 +607,6 @@ namespace Live.com_Сombiner
                     Thread.Sleep(rand.Next(minPause, maxPause));
                     request.Post("Https://www.instagram.com/accounts/web_create_ajax/attempt/", UrlParams);
                     #endregion
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели дату рождения");
 
                     #region Читаем все сообщения на почте
                     if (!GetMailKit.ReadMessages(Email, password, request))
@@ -727,8 +702,6 @@ namespace Live.com_Сombiner
                     string signup_code = Response.BetweenOrEmpty("signup_code\":\"", "\"");
                     #endregion
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели код из почты");
-
                     #region Ajax Запросы на ввод данных для регистрации (Конечный запрос)
                     request.AddHeader("Accept", "*/*");
                     request.AddHeader("X-CSRFToken", csrf_token);
@@ -781,14 +754,10 @@ namespace Live.com_Сombiner
                     Response = request.Post("Https://www.instagram.com/accounts/web_create_ajax/", UrlParams).ToString();
                     #endregion
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Отправили конечный запрос");
-
                     if (Response.Contains("account_created\":true"))
                         return (Status.True, request.Cookies);
                     if (Response.Contains("checkpoint_required"))
                     {
-                        SaveData.WriteToLog($"{Email.Email}:{password}", "Вылезла капча, пробуем решить");
-
                         string checkpoint_url = Response.BetweenOrEmpty("checkpoint_url\":\"", "\"");
 
                         #region Делаем Get запрос на страницу checkpoint_required
