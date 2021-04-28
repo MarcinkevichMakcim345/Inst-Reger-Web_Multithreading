@@ -151,8 +151,7 @@ namespace Live.com_Сombiner
                     request.UseCookies = true;
                     request.Proxy = proxyClient;
                     request.UserAgent = userAgent;
-                    var UrlParams = new RequestParams();
-                    request["Accept-Language"] = "de-DE";
+                    request["Accept-Language"] = "ru;q=0.9";
 
                     string day = rand.Next(1, 28).ToString();
                     string month = rand.Next(1, 13).ToString();
@@ -180,7 +179,6 @@ namespace Live.com_Сombiner
                     Thread.Sleep(rand.Next(minPause, maxPause));
                     string Response = request.Get("Https://www.instagram.com/").ToString();
 
-                    string device_id = Response.BetweenOrEmpty("device_id\":\"", "\"");
                     string XInstagramAJAX = Response.BetweenOrEmpty("rollout_hash\":\"", "\"");
                     string csrf_token = Response.BetweenOrEmpty("csrf_token\":\"", "\"");
                     string xmid = request.Cookies.GetCookieHeader("Https://www.instagram.com/").BetweenOrEmpty("mid=", ";");
@@ -263,185 +261,16 @@ namespace Live.com_Сombiner
                     #endregion
 
                     Thread.Sleep(rand.Next(minPause, maxPause));
-                    Response = request.Get(Consumer).ToString();
-                    string viewer = Response.BetweenOrEmpty("m.exports=\"", "\"") + "\"";
+                    string viewer = request.Get(Consumer).ToString().BetweenOrEmpty("m.exports=\"", "\"") + "\"";
                     string surfaces_to_queries = $"{{\"{PAGE_TOP}\":\"{viewer},\"{INTERSTITIAL}\":\"{viewer},\"{TOOLTIP}\":\"{viewer}}}";
-                    string doc_id = Response.BetweenOrEmpty("{BANNER:'1',MODAL:'2'}", ";").BetweenOrEmpty("n='", "'");
                     #endregion
 
                     SaveData.WriteToLog($"{Email.Email}:{password}", "Прошлись по библиотекам и спарсили нужные данные");
 
-                    #region Парсим MID данные для encrypt и куки.
-
+                    #region Парсим MID и данные для Encrypt
+                    string key_id = null, public_key = null, version = null;
                     if (xmid.Length <= 0)
                     {
-                        xmid = GetXmid();
-
-                        #region Делаем Post запрос на проверку браузера
-                        request.AddHeader("Accept", "*/*");
-                        request.AddHeader("X-Mid", xmid);
-                        request.AddHeader("X-CSRFToken", csrf_token);
-                        request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
-                        request.AddHeader("X-IG-App-ID", PWAAppId);
-                        request.AddHeader("X-IG-WWW-Claim", "0");
-                        request.AddHeader("X-Requested-With", "XMLHttpRequest");
-                        request.AddHeader("Origin", "https://www.instagram.com");
-                        request.AddHeader("DNT", "1");
-                        request.AddHeader("Referer", "https://www.instagram.com/");
-
-                        #region Порядок Хэдеров
-                        request.AddHeadersOrder(new List<string>()
-                    {
-                    "Host",
-                    "User-Agent",
-                    "Accept",
-                    "Accept-Language",
-                    "X-Mid",
-                    "X-CSRFToken",
-                    "X-Instagram-AJAX",
-                    "X-IG-App-ID",
-                    "X-IG-WWW-Claim",
-                    "Content-Type",
-                    "X-Requested-With",
-                    "Origin",
-                    "DNT",
-                    "Connection",
-                    "Referer",
-                    "Accept-Encoding",
-                    "Content-Length"
-                    });
-                        #endregion
-
-                        UrlParams.Clear();
-                        UrlParams["bloks_versioning_id"] = bloks_versioning_id;
-                        UrlParams["surfaces_to_queries"] = surfaces_to_queries;
-                        UrlParams["vc_policy"] = "default";
-                        UrlParams["version"] = "1";
-
-                        Thread.Sleep(rand.Next(minPause, maxPause));
-                        request.Post("https://www.instagram.com/qp/batch_fetch_web/", UrlParams);
-                        #endregion
-
-                        #region Соглашаемся с считыванием куков Post запрос
-                        request.AddHeader("Accept", "*/*");
-                        request.AddHeader("X-Mid", xmid);
-                        request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
-                        request.AddHeader("X-IG-App-ID", PWAAppId);
-                        request.AddHeader("Origin", "https://www.instagram.com");
-                        request.AddHeader("DNT", "1");
-                        request.AddHeader("Referer", "https://www.instagram.com/");
-
-                        #region Порядок Хэдеров
-                        request.AddHeadersOrder(new List<string>()
-                    {
-                    "Host",
-                    "User-Agent",
-                    "Accept",
-                    "Accept-Language",
-                    "X-Mid",
-                    "X-Instagram-AJAX",
-                    "X-IG-App-ID",
-                    "Content-Type",
-                    "Origin",
-                    "DNT",
-                    "Connection",
-                    "Referer",
-                    "Accept-Encoding",
-                    "Content-Length"
-                    });
-                        #endregion
-
-                        UrlParams.Clear();
-                        UrlParams["doc_id"] = doc_id;
-                        UrlParams["variables"] = $"{{\"ig_did\":\"{device_id}\",\"first_party_tracking_opt_in\":true,\"third_party_tracking_opt_in\":true,\"input\":{{\"client_mutation_id\":0}}}}";
-
-                        Thread.Sleep(rand.Next(minPause, maxPause));
-                        Response = request.Post("https://graphql.instagram.com/graphql/", UrlParams).ToString();
-                        #endregion
-
-                        #region Делаем запрос на shared_data
-                        request.AddHeader("Accept", "*/*");
-                        request.AddHeader("X-Web-Device-Id", device_id);
-                        request.AddHeader("X-Mid", xmid);
-                        request.AddHeader("X-IG-App-ID", PWAAppId);
-                        request.AddHeader("X-IG-WWW-Claim", "0");
-                        request.AddHeader("X-Requested-With", "XMLHttpRequest");
-                        request.AddHeader("DNT", "1");
-                        request.AddHeader("Referer", "https://www.instagram.com/accounts/login/");
-
-                        #region Порядок Хэдеров
-                        request.AddHeadersOrder(new List<string>()
-                    {
-                    "Host",
-                    "User-Agent",
-                    "Accept",
-                    "Accept-Language",
-                    "X-Web-Device-Id",
-                    "X-Mid",
-                    "X-IG-App-ID",
-                    "X-IG-WWW-Claim",
-                    "X-Requested-With",
-                    "DNT",
-                    "Connection",
-                    "Referer",
-                    "Accept-Encoding"
-                    });
-                        #endregion
-
-                        Thread.Sleep(rand.Next(minPause, maxPause));
-                        Response = request.Get("https://www.instagram.com/data/shared_data/").ToString();
-                        #endregion
-
-                        xmid = request.Cookies.GetCookieHeader("https://www.instagram.com/data/shared_data/").BetweenOrEmpty("mid=", ";");
-                        csrf_token = request.Cookies.GetCookieHeader("https://www.instagram.com/data/shared_data/").BetweenOrEmpty("csrftoken=", ";");
-                    }
-                    else
-                    {
-                        #region Делаем Post запрос на проверку браузера
-                        request.AddHeader("Accept", "*/*");
-                        request.AddHeader("X-CSRFToken", csrf_token);
-                        request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
-                        request.AddHeader("X-IG-App-ID", PWAAppId);
-                        request.AddHeader("X-IG-WWW-Claim", "0");
-                        request.AddHeader("X-Requested-With", "XMLHttpRequest");
-                        request.AddHeader("Origin", "https://www.instagram.com");
-                        request.AddHeader("DNT", "1");
-                        request.AddHeader("Referer", "https://www.instagram.com/");
-
-                        #region Порядок Хэдеров
-                        request.AddHeadersOrder(new List<string>()
-                    {
-                    "Host",
-                    "User-Agent",
-                    "Accept",
-                    "Accept-Language",
-                    "X-CSRFToken",
-                    "X-Instagram-AJAX",
-                    "X-IG-App-ID",
-                    "X-IG-WWW-Claim",
-                    "Content-Type",
-                    "X-Requested-With",
-                    "Origin",
-                    "DNT",
-                    "Connection",
-                    "Referer",
-                    "Cookie",
-                    "Accept-Encoding",
-                    "Content-Length"
-                    });
-                        #endregion
-
-                        UrlParams.Clear();
-                        UrlParams["bloks_versioning_id"] = bloks_versioning_id;
-                        UrlParams["surfaces_to_queries"] = surfaces_to_queries;
-                        UrlParams["vc_policy"] = "default";
-                        UrlParams["version"] = "1";
-
-                        Thread.Sleep(rand.Next(minPause, maxPause));
-                        request.Post("https://www.instagram.com/qp/batch_fetch_web/", UrlParams);
-                        #endregion
-
-                        #region Делаем запрос на shared_data в случае если есть куки
                         request.AddHeader("Accept", "*/*");
                         request.AddHeader("X-CSRFToken", csrf_token);
                         request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
@@ -475,17 +304,60 @@ namespace Live.com_Сombiner
                     });
                         #endregion
 
-                        Thread.Sleep(rand.Next(minPause, maxPause));
                         Response = request.Get("https://www.instagram.com/data/shared_data/").ToString();
-                        #endregion
-                    }
 
-                    string key_id = Response.BetweenOrEmpty("key_id\":\"", "\"");
-                    string public_key = Response.BetweenOrEmpty("public_key\":\"", "\"");
-                    string version = Response.BetweenOrEmpty("version\":\"", "\"");
+                        key_id = Response.BetweenOrEmpty("key_id\":\"", "\"");
+                        public_key = Response.BetweenOrEmpty("public_key\":\"", "\"");
+                        version = Response.BetweenOrEmpty("version\":\"", "\"");
+                        xmid = request.Cookies.GetCookieHeader("https://www.instagram.com/data/shared_data/").BetweenOrEmpty("mid=", ";");
+                    }
                     #endregion
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", $"Спарсили Encrypt данные и куки.");
+                    SaveData.WriteToLog($"{Email.Email}:{password}", $"Спарсили MID {xmid}");
+
+                    #region Делаем Post запрос на проверку браузера
+                    request.AddHeader("Accept", "*/*");
+                    request.AddHeader("X-CSRFToken", csrf_token);
+                    request.AddHeader("X-Instagram-AJAX", XInstagramAJAX);
+                    request.AddHeader("X-IG-App-ID", PWAAppId);
+                    request.AddHeader("X-IG-WWW-Claim", "0");
+                    request.AddHeader("X-Requested-With", "XMLHttpRequest");
+                    request.AddHeader("Origin", "https://www.instagram.com");
+                    request.AddHeader("DNT", "1");
+                    request.AddHeader("Referer", "https://www.instagram.com/");
+
+                    #region Порядок Хэдеров
+                    request.AddHeadersOrder(new List<string>()
+                    {
+                    "Host",
+                    "User-Agent",
+                    "Accept",
+                    "Accept-Language",
+                    "X-CSRFToken",
+                    "X-Instagram-AJAX",
+                    "X-IG-App-ID",
+                    "X-IG-WWW-Claim",
+                    "Content-Type",
+                    "X-Requested-With",
+                    "Origin",
+                    "DNT",
+                    "Connection",
+                    "Referer",
+                    "Cookie",
+                    "Accept-Encoding",
+                    "Content-Length"
+                    });
+                    #endregion
+
+                    var UrlParams = new RequestParams();
+                    UrlParams["bloks_versioning_id"] = bloks_versioning_id;
+                    UrlParams["surfaces_to_queries"] = surfaces_to_queries;
+                    UrlParams["vc_policy"] = "default";
+                    UrlParams["version"] = "1";
+
+                    Thread.Sleep(rand.Next(minPause, maxPause));
+                    request.Post("https://www.instagram.com/qp/batch_fetch_web/", UrlParams);
+                    #endregion
 
                     #region Делаем Get запрос на страницу регистрации
                     request.AddHeader("Accept", "*/*");
@@ -608,6 +480,8 @@ namespace Live.com_Сombiner
 
                     Thread.Sleep(rand.Next(minPause, maxPause));
                     request.Post("Https://www.instagram.com/accounts/web_create_ajax/attempt/", UrlParams);
+
+                    string client_id = request.Cookies.GetCookieHeader("Https://www.instagram.com/accounts/web_create_ajax/attempt/").BetweenOrEmpty("mid=", ";");
                     #endregion
 
                     SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели имя и логин");
@@ -651,7 +525,7 @@ namespace Live.com_Сombiner
                     UrlParams["enc_password"] = EncryptionService.GetEncryptPassword(password, public_key, key_id, version);
                     UrlParams["username"] = Login;
                     UrlParams["first_name"] = nameSurname;
-                    UrlParams["client_id"] = xmid;
+                    UrlParams["client_id"] = client_id;
                     UrlParams["seamless_login_enabled"] = "1";
                     UrlParams["opt_into_one_tap"] = "false";
 
@@ -746,7 +620,7 @@ namespace Live.com_Сombiner
                     UrlParams["month"] = month;
                     UrlParams["day"] = day;
                     UrlParams["year"] = year;
-                    UrlParams["client_id"] = xmid;
+                    UrlParams["client_id"] = client_id;
                     UrlParams["seamless_login_enabled"] = "1";
 
                     Thread.Sleep(rand.Next(minPause, maxPause));
@@ -793,7 +667,7 @@ namespace Live.com_Сombiner
                     #endregion
 
                     UrlParams.Clear();
-                    UrlParams["device_id"] = xmid;
+                    UrlParams["device_id"] = client_id;
                     UrlParams["email"] = Email.Email;
 
                     Thread.Sleep(rand.Next(minPause, maxPause));
@@ -840,7 +714,7 @@ namespace Live.com_Сombiner
 
                     UrlParams.Clear();
                     UrlParams["code"] = code;
-                    UrlParams["device_id"] = xmid;
+                    UrlParams["device_id"] = client_id;
                     UrlParams["email"] = Email.Email;
 
                     Thread.Sleep(rand.Next(minPause, maxPause));
@@ -891,7 +765,7 @@ namespace Live.com_Сombiner
                     UrlParams["month"] = month;
                     UrlParams["day"] = day;
                     UrlParams["year"] = year;
-                    UrlParams["client_id"] = xmid;
+                    UrlParams["client_id"] = client_id;
                     UrlParams["seamless_login_enabled"] = "1";
                     UrlParams["tos_version"] = "row";
                     UrlParams["force_sign_up_code"] = signup_code;
@@ -1067,17 +941,6 @@ namespace Live.com_Сombiner
                              .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
-        }
-        #endregion
-
-        #region Генерация фейк xMid
-        public static string GetXmid()
-        {
-            int randLength = rand.Next(52, 55);
-            string sourceline = "abcdefghijklmnopqrstuvwxyz0123456789", xmid = "";
-            for (int i = 0; i < randLength; i++)
-                xmid += sourceline[rand.Next(sourceline.Length)];
-            return xmid;
         }
         #endregion
     }
