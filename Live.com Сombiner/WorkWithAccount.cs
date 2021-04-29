@@ -164,11 +164,9 @@ namespace Live.com_Сombiner
                     string month = rand.Next(1, 13).ToString();
                     string year = rand.Next(1985, 2003).ToString();
 
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Проверяем почту на валидность, и читаем все сообщения на почте.");
-
                     #region Читаем все сообщения на почте
                     if (!GetMailKit.ReadMessages(Email, password, request))
-                        return (Status.UnknownError, null);
+                        return (Status.InvalidEmail, null);
                     #endregion
 
                     #region Делаем Get запрос на главную страницу сайта. Парсим: Headers XInstagramAJAX, Headers csrf_token, Библиотека ConsumerLibCommons.
