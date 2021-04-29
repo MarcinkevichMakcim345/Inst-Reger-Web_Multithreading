@@ -170,6 +170,8 @@ namespace Live.com_Сombiner
                 SaveData.GoodRegistration = 0;
                 SaveData.InvalidRegistration = 0;
                 SaveData.NumberError = 0;
+                SaveData.InvalidEmail = 0;
+                SaveData.BadProxy = 0;
 
                 WorkWithAccount.minPause = (int)MinPauseNumeric.Value;
                 WorkWithAccount.maxPause = (int)MaxPauseNumeric.Value;
@@ -264,6 +266,7 @@ namespace Live.com_Сombiner
                 InvalidRegistrationLabel.Text = $"Не удачно: {SaveData.InvalidRegistration}";
                 NumberErrorLabel.Text = $"Требует номер: {SaveData.NumberError}";
                 InvalidEmailLabel.Text = $"Не валидных Mail: {SaveData.InvalidEmail}";
+                BadProxyLabel.Text = $"Грязных прокси: {SaveData.BadProxy}";
 
                 // Запись аккаунтов.
                 lock (WorkWithAccount.LogOBJ)
@@ -279,6 +282,8 @@ namespace Live.com_Сombiner
                     SaveData.NumberErrorList.Clear();
                     File.AppendAllLines("out/regger/InvalidEmail.txt", SaveData.InvalidEmailList);
                     SaveData.InvalidEmailList.Clear();
+                    File.AppendAllLines("out/regger/BadProxy.txt", SaveData.BadProxyList);
+                    SaveData.BadProxyList.Clear();
                 }
 
                 // Запись данных в Лог.

@@ -103,6 +103,7 @@ namespace Live.com_Сombiner
             this.UsedRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.InvalidEmailLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.BadProxyLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.guna2GroupBox1.SuspendLayout();
@@ -121,7 +122,7 @@ namespace Live.com_Сombiner
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(24, 1197);
+            this.button1.Location = new System.Drawing.Point(24, 1232);
             this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(248, 76);
@@ -132,7 +133,7 @@ namespace Live.com_Сombiner
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(340, 1197);
+            this.button2.Location = new System.Drawing.Point(340, 1232);
             this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(248, 76);
@@ -166,7 +167,7 @@ namespace Live.com_Сombiner
             // StopWatchLabel
             // 
             this.StopWatchLabel.AutoSize = true;
-            this.StopWatchLabel.Location = new System.Drawing.Point(18, 1290);
+            this.StopWatchLabel.Location = new System.Drawing.Point(18, 1325);
             this.StopWatchLabel.Name = "StopWatchLabel";
             this.StopWatchLabel.Size = new System.Drawing.Size(393, 32);
             this.StopWatchLabel.TabIndex = 43;
@@ -178,7 +179,7 @@ namespace Live.com_Сombiner
             this.OperatingModeBox.FormattingEnabled = true;
             this.OperatingModeBox.Items.AddRange(new object[] {
             "Регистратор"});
-            this.OperatingModeBox.Location = new System.Drawing.Point(24, 1143);
+            this.OperatingModeBox.Location = new System.Drawing.Point(24, 1178);
             this.OperatingModeBox.Name = "OperatingModeBox";
             this.OperatingModeBox.Size = new System.Drawing.Size(564, 39);
             this.OperatingModeBox.TabIndex = 38;
@@ -186,7 +187,7 @@ namespace Live.com_Сombiner
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(18, 1096);
+            this.label20.Location = new System.Drawing.Point(18, 1131);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(210, 32);
             this.label20.TabIndex = 39;
@@ -233,7 +234,7 @@ namespace Live.com_Сombiner
             this.groupBox5.Controls.Add(this.CheckBalanceCaptchaButton);
             this.groupBox5.Controls.Add(this.label13);
             this.groupBox5.Controls.Add(this.ClientKeyBox);
-            this.groupBox5.Location = new System.Drawing.Point(24, 1335);
+            this.groupBox5.Location = new System.Drawing.Point(24, 1370);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(564, 183);
             this.groupBox5.TabIndex = 45;
@@ -1211,6 +1212,7 @@ namespace Live.com_Сombiner
             // 
             // guna2GroupBox5
             // 
+            this.guna2GroupBox5.Controls.Add(this.BadProxyLabel);
             this.guna2GroupBox5.Controls.Add(this.InvalidEmailLabel);
             this.guna2GroupBox5.Controls.Add(this.NumberErrorLabel);
             this.guna2GroupBox5.Controls.Add(this.InvalidRegistrationLabel);
@@ -1221,7 +1223,7 @@ namespace Live.com_Сombiner
             this.guna2GroupBox5.Location = new System.Drawing.Point(24, 761);
             this.guna2GroupBox5.Name = "guna2GroupBox5";
             this.guna2GroupBox5.ShadowDecoration.Parent = this.guna2GroupBox5;
-            this.guna2GroupBox5.Size = new System.Drawing.Size(564, 315);
+            this.guna2GroupBox5.Size = new System.Drawing.Size(564, 353);
             this.guna2GroupBox5.TabIndex = 66;
             this.guna2GroupBox5.Text = "Статистика  регистрации";
             // 
@@ -1279,17 +1281,26 @@ namespace Live.com_Сombiner
             // InvalidEmailLabel
             // 
             this.InvalidEmailLabel.BackColor = System.Drawing.Color.Transparent;
-            this.InvalidEmailLabel.Location = new System.Drawing.Point(26, 261);
+            this.InvalidEmailLabel.Location = new System.Drawing.Point(26, 253);
             this.InvalidEmailLabel.Name = "InvalidEmailLabel";
             this.InvalidEmailLabel.Size = new System.Drawing.Size(275, 43);
             this.InvalidEmailLabel.TabIndex = 4;
             this.InvalidEmailLabel.Text = "Не валидных Mail: 0";
             // 
+            // BadProxyLabel
+            // 
+            this.BadProxyLabel.BackColor = System.Drawing.Color.Transparent;
+            this.BadProxyLabel.Location = new System.Drawing.Point(26, 302);
+            this.BadProxyLabel.Name = "BadProxyLabel";
+            this.BadProxyLabel.Size = new System.Drawing.Size(253, 43);
+            this.BadProxyLabel.TabIndex = 5;
+            this.BadProxyLabel.Text = "Грязных прокси: 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2501, 1520);
+            this.ClientSize = new System.Drawing.Size(2501, 1590);
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.guna2GroupBox5);
             this.Controls.Add(this.guna2GroupBox4);
@@ -1410,6 +1421,7 @@ namespace Live.com_Сombiner
         private System.Windows.Forms.Button button5;
         private Guna.UI2.WinForms.Guna2HtmlLabel NumberErrorLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel InvalidEmailLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel BadProxyLabel;
     }
 }
 

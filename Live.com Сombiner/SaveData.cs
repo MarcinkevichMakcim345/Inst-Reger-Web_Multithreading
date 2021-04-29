@@ -36,12 +36,16 @@ namespace Live.com_Сombiner
         /// Лист не валидных Mail почтовиков.
         /// </summary>
         public static List<string> InvalidEmailList = new List<string>();
+        /// <summary>
+        /// Лист аккаунтов с грязным соксом.
+        /// </summary>
+        public static List<string> BadProxyList = new List<string>();
         #endregion
 
         /// <summary>
         /// Счетчики успешно выполненных операций по регистрации
         /// </summary>
-        public static int GoodRegistration, InvalidRegistration, UsedRegistration, NumberError, InvalidEmail;
+        public static int GoodRegistration, InvalidRegistration, UsedRegistration, NumberError, InvalidEmail, BadProxy;
         #endregion
 
         #region Метод записи данных в лог

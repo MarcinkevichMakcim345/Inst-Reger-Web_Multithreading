@@ -21,72 +21,75 @@ namespace Live.com_Сombiner
         #region Метод для прочтения всех сообщений
         public static bool ReadMessages((string Email, string Password) Email, string password, HttpRequest request)
         {
-            try
+            for (int i = 0; i < 3; i++)
             {
-                using (var client = new ImapClient())
+                try
                 {
-                    if (request.Proxy != null)
+                    using (var client = new ImapClient())
                     {
-                        string Host = request.Proxy.Host.ToString(),
-                            Port = request.Proxy.Port.ToString();
-
-                        if (request.Proxy.Host != null && request.Proxy.Username == null)
+                        if (request.Proxy != null)
                         {
+                            string Host = request.Proxy.Host.ToString(),
+                                Port = request.Proxy.Port.ToString();
 
-                            switch (request.Proxy.Type.ToString())
+                            if (request.Proxy.Host != null && request.Proxy.Username == null)
                             {
-                                case "HTTP":
-                                    client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
-                                    break;
-                                case "Socks4":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
-                                    break;
-                                case "Socks5":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
-                                    break;
+
+                                switch (request.Proxy.Type.ToString())
+                                {
+                                    case "HTTP":
+                                        client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
+                                        break;
+                                    case "Socks4":
+                                        client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
+                                        break;
+                                    case "Socks5":
+                                        client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
+                                        break;
+                                }
+                            }
+                            if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
+                            {
+                                var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
+
+                                switch (request.Proxy.Type.ToString())
+                                {
+                                    case "HTTP":
+                                        client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
+                                        break;
+                                    case "Socks4":
+                                        client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
+                                        break;
+                                    case "Socks5":
+                                        client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
+                                        break;
+                                }
                             }
                         }
-                        if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
-                        {
-                            var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
 
-                            switch (request.Proxy.Type.ToString())
-                            {
-                                case "HTTP":
-                                    client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
-                                    break;
-                                case "Socks4":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
-                                    break;
-                                case "Socks5":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
-                                    break;
-                            }
-                        }
+                        client.ServerCertificateValidationCallback = (object sender,
+                        X509Certificate certificate,
+                        X509Chain chain,
+                        SslPolicyErrors sslPolicyErrors) => true;
+
+                        client.Connect("imap.gmx.net", 993, true);
+                        client.Authenticate(Email.Email, Email.Password);
+
+                        // Читаем все сообщения
+                        var inbox = client.Inbox;
+                        inbox.Open(FolderAccess.ReadWrite);
+                        inbox.AddFlags(UniqueIdRange.All, MessageFlags.Seen, true);
+
+                        //for (int i = 0; i < inbox.Count; i++)
+                        //    inbox.AddFlags(i, MessageFlags.Seen, false);
+                        client.Disconnect(true);
+
+                        SaveData.WriteToLog($"{Email.Email}:{password}", "Прочитали сообщения на почте");
+                        return true;
                     }
-
-                    client.ServerCertificateValidationCallback = (object sender,
-                    X509Certificate certificate,
-                    X509Chain chain,
-                    SslPolicyErrors sslPolicyErrors) => true;
-
-                    client.Connect("imap.gmx.net", 993, true);
-                    client.Authenticate(Email.Email, Email.Password);
-
-                    // Читаем все сообщения
-                    var inbox = client.Inbox;
-                    inbox.Open(FolderAccess.ReadWrite);
-                    inbox.AddFlags(UniqueIdRange.All, MessageFlags.Seen, true);
-
-                    //for (int i = 0; i < inbox.Count; i++)
-                    //    inbox.AddFlags(i, MessageFlags.Seen, false);
-                    client.Disconnect(true);
-
-                    SaveData.WriteToLog($"{Email.Email}:{password}", "Прочитали сообщения на почте");
-                    return true;
                 }
+                catch { };
             }
-            catch { };
             SaveData.WriteToLog($"{Email.Email}:{password}", "Не смогли прочитать сообщения на почте");
             return false;
         }
