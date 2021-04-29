@@ -28,7 +28,8 @@ namespace Live.com_Сombiner
             False,
             UnknownError,
             BlockedAccount,
-            NumberError
+            NumberError,
+            InvalidEmail
         }
         /// <summary>
         /// Количество аккаунтов для регистрации
@@ -114,6 +115,11 @@ namespace Live.com_Сombiner
                                 SaveData.WriteToLog($"{Email.Email}:{Password}", "Аккаунт не зарегестрирован, попросили номер после капчи.");
                                 SaveData.SaveAccount($"{Email.Email}:{Password}{proxyLog}|{UserAgent}", SaveData.NumberErrorList);
                                 break;
+                            case Status.InvalidEmail:
+                                SaveData.InvalidEmail++;
+                                SaveData.WriteToLog($"{Email.Email}:{Password}", "Аккаунт не зарегестрирован, не смогли подключится к почте.");
+                                SaveData.SaveAccount($"{Email.Email}:{Password}{proxyLog}|{UserAgent}", SaveData.InvalidEmailList);
+                                break;
                             default:
                                 SaveData.WriteToLog($"{Email.Email}:{Password}", "Неизвестная ошибка, повторяем.");
                                 UserAgent = GetUserAgent.get();
@@ -157,6 +163,13 @@ namespace Live.com_Сombiner
                     string day = rand.Next(1, 28).ToString();
                     string month = rand.Next(1, 13).ToString();
                     string year = rand.Next(1985, 2003).ToString();
+
+                    SaveData.WriteToLog($"{Email.Email}:{password}", "Проверяем почту на валидность, и читаем все сообщения на почте.");
+
+                    #region Читаем все сообщения на почте
+                    if (!GetMailKit.ReadMessages(Email, password, request))
+                        return (Status.UnknownError, null);
+                    #endregion
 
                     #region Делаем Get запрос на главную страницу сайта. Парсим: Headers XInstagramAJAX, Headers csrf_token, Библиотека ConsumerLibCommons.
                     request.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
@@ -755,11 +768,6 @@ namespace Live.com_Сombiner
 
                     SaveData.WriteToLog($"{Email.Email}:{password}", "Ввели дату рождения");
 
-                    #region Читаем все сообщения на почте
-                    if (!GetMailKit.ReadMessages(Email, password, request))
-                        return (Status.UnknownError, null);
-                    #endregion
-
                     #region Отправлям Post запрос на отправку кода верификации на телефон
                     request.AddHeader("Accept", "*/*");
                     request.AddHeader("X-CSRFToken", csrf_token);
@@ -996,7 +1004,7 @@ namespace Live.com_Сombiner
                         return (Status.False, null);
                 }
             }
-            catch { };
+            catch (Exception exception){ SaveData.WriteToLog($"{Email.Email}:{password}", $"Ошибка: {exception.Message}"); };
             return (Status.UnknownError, null);
         }
         #endregion

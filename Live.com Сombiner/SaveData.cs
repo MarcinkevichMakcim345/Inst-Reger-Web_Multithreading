@@ -29,15 +29,19 @@ namespace Live.com_Сombiner
         /// </summary>
         public static List<string> InvalidRegistrationList = new List<string>();
         /// <summary>
-        /// Лист с не успешно зарегестрированными аккаунтами
+        /// Лист с аккаунтами, на которых чекпоинт с номером
         /// </summary>
         public static List<string> NumberErrorList = new List<string>();
+        /// <summary>
+        /// Лист не валидных Mail почтовиков.
+        /// </summary>
+        public static List<string> InvalidEmailList = new List<string>();
         #endregion
 
         /// <summary>
         /// Счетчики успешно выполненных операций по регистрации
         /// </summary>
-        public static int GoodRegistration, InvalidRegistration, UsedRegistration, NumberError;
+        public static int GoodRegistration, InvalidRegistration, UsedRegistration, NumberError, InvalidEmail;
         #endregion
 
         #region Метод записи данных в лог

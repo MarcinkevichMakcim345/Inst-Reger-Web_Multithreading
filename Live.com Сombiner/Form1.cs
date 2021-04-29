@@ -263,6 +263,7 @@ namespace Live.com_Сombiner
                 GoodRegistrationLabel.Text = $"Удачно: {SaveData.GoodRegistration}";
                 InvalidRegistrationLabel.Text = $"Не удачно: {SaveData.InvalidRegistration}";
                 NumberErrorLabel.Text = $"Требует номер: {SaveData.NumberError}";
+                InvalidEmailLabel.Text = $"Не валидных Mail: {SaveData.InvalidEmail}";
 
                 // Запись аккаунтов.
                 lock (WorkWithAccount.LogOBJ)
@@ -276,6 +277,8 @@ namespace Live.com_Сombiner
                     SaveData.ProcessedRegistrationList.Clear();
                     File.AppendAllLines("out/regger/NumberError.txt", SaveData.NumberErrorList);
                     SaveData.NumberErrorList.Clear();
+                    File.AppendAllLines("out/regger/InvalidEmail.txt", SaveData.InvalidEmailList);
+                    SaveData.InvalidEmailList.Clear();
                 }
 
                 // Запись данных в Лог.

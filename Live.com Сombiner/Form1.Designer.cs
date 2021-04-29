@@ -97,11 +97,12 @@ namespace Live.com_Сombiner
             this.NameSurnameBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2HtmlLabel15 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2GroupBox5 = new Guna.UI2.WinForms.Guna2GroupBox();
+            this.NumberErrorLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.InvalidRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.GoodRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.UsedRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            this.NumberErrorLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.InvalidEmailLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.guna2GroupBox1.SuspendLayout();
@@ -120,7 +121,7 @@ namespace Live.com_Сombiner
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(24, 1134);
+            this.button1.Location = new System.Drawing.Point(24, 1197);
             this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(248, 76);
@@ -131,7 +132,7 @@ namespace Live.com_Сombiner
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(340, 1134);
+            this.button2.Location = new System.Drawing.Point(340, 1197);
             this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(248, 76);
@@ -165,7 +166,7 @@ namespace Live.com_Сombiner
             // StopWatchLabel
             // 
             this.StopWatchLabel.AutoSize = true;
-            this.StopWatchLabel.Location = new System.Drawing.Point(18, 1227);
+            this.StopWatchLabel.Location = new System.Drawing.Point(18, 1290);
             this.StopWatchLabel.Name = "StopWatchLabel";
             this.StopWatchLabel.Size = new System.Drawing.Size(393, 32);
             this.StopWatchLabel.TabIndex = 43;
@@ -177,7 +178,7 @@ namespace Live.com_Сombiner
             this.OperatingModeBox.FormattingEnabled = true;
             this.OperatingModeBox.Items.AddRange(new object[] {
             "Регистратор"});
-            this.OperatingModeBox.Location = new System.Drawing.Point(24, 1080);
+            this.OperatingModeBox.Location = new System.Drawing.Point(24, 1143);
             this.OperatingModeBox.Name = "OperatingModeBox";
             this.OperatingModeBox.Size = new System.Drawing.Size(564, 39);
             this.OperatingModeBox.TabIndex = 38;
@@ -185,7 +186,7 @@ namespace Live.com_Сombiner
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(18, 1033);
+            this.label20.Location = new System.Drawing.Point(18, 1096);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(210, 32);
             this.label20.TabIndex = 39;
@@ -232,7 +233,7 @@ namespace Live.com_Сombiner
             this.groupBox5.Controls.Add(this.CheckBalanceCaptchaButton);
             this.groupBox5.Controls.Add(this.label13);
             this.groupBox5.Controls.Add(this.ClientKeyBox);
-            this.groupBox5.Location = new System.Drawing.Point(24, 1272);
+            this.groupBox5.Location = new System.Drawing.Point(24, 1335);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(564, 183);
             this.groupBox5.TabIndex = 45;
@@ -1210,6 +1211,7 @@ namespace Live.com_Сombiner
             // 
             // guna2GroupBox5
             // 
+            this.guna2GroupBox5.Controls.Add(this.InvalidEmailLabel);
             this.guna2GroupBox5.Controls.Add(this.NumberErrorLabel);
             this.guna2GroupBox5.Controls.Add(this.InvalidRegistrationLabel);
             this.guna2GroupBox5.Controls.Add(this.GoodRegistrationLabel);
@@ -1219,9 +1221,18 @@ namespace Live.com_Сombiner
             this.guna2GroupBox5.Location = new System.Drawing.Point(24, 761);
             this.guna2GroupBox5.Name = "guna2GroupBox5";
             this.guna2GroupBox5.ShadowDecoration.Parent = this.guna2GroupBox5;
-            this.guna2GroupBox5.Size = new System.Drawing.Size(564, 262);
+            this.guna2GroupBox5.Size = new System.Drawing.Size(564, 315);
             this.guna2GroupBox5.TabIndex = 66;
             this.guna2GroupBox5.Text = "Статистика  регистрации";
+            // 
+            // NumberErrorLabel
+            // 
+            this.NumberErrorLabel.BackColor = System.Drawing.Color.Transparent;
+            this.NumberErrorLabel.Location = new System.Drawing.Point(26, 204);
+            this.NumberErrorLabel.Name = "NumberErrorLabel";
+            this.NumberErrorLabel.Size = new System.Drawing.Size(242, 43);
+            this.NumberErrorLabel.TabIndex = 3;
+            this.NumberErrorLabel.Text = "Требует номер: 0";
             // 
             // InvalidRegistrationLabel
             // 
@@ -1257,7 +1268,7 @@ namespace Live.com_Сombiner
             this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2Button1.ForeColor = System.Drawing.Color.White;
             this.guna2Button1.HoverState.Parent = this.guna2Button1;
-            this.guna2Button1.Location = new System.Drawing.Point(1411, 1344);
+            this.guna2Button1.Location = new System.Drawing.Point(1341, 1335);
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.ShadowDecoration.Parent = this.guna2Button1;
             this.guna2Button1.Size = new System.Drawing.Size(277, 45);
@@ -1265,20 +1276,20 @@ namespace Live.com_Сombiner
             this.guna2Button1.Text = "guna2Button1";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
-            // NumberErrorLabel
+            // InvalidEmailLabel
             // 
-            this.NumberErrorLabel.BackColor = System.Drawing.Color.Transparent;
-            this.NumberErrorLabel.Location = new System.Drawing.Point(26, 204);
-            this.NumberErrorLabel.Name = "NumberErrorLabel";
-            this.NumberErrorLabel.Size = new System.Drawing.Size(242, 43);
-            this.NumberErrorLabel.TabIndex = 3;
-            this.NumberErrorLabel.Text = "Требует номер: 0";
+            this.InvalidEmailLabel.BackColor = System.Drawing.Color.Transparent;
+            this.InvalidEmailLabel.Location = new System.Drawing.Point(26, 261);
+            this.InvalidEmailLabel.Name = "InvalidEmailLabel";
+            this.InvalidEmailLabel.Size = new System.Drawing.Size(275, 43);
+            this.InvalidEmailLabel.TabIndex = 4;
+            this.InvalidEmailLabel.Text = "Не валидных Mail: 0";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2501, 1537);
+            this.ClientSize = new System.Drawing.Size(2501, 1520);
             this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.guna2GroupBox5);
             this.Controls.Add(this.guna2GroupBox4);
@@ -1398,6 +1409,7 @@ namespace Live.com_Сombiner
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel21;
         private System.Windows.Forms.Button button5;
         private Guna.UI2.WinForms.Guna2HtmlLabel NumberErrorLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel InvalidEmailLabel;
     }
 }
 
