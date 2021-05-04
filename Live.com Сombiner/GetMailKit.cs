@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Live.com_Сombiner
 {
@@ -27,52 +28,54 @@ namespace Live.com_Сombiner
                 {
                     using (var client = new ImapClient())
                     {
-                        if (request.Proxy != null)
-                        {
-                            string Host = request.Proxy.Host.ToString(),
-                                Port = request.Proxy.Port.ToString();
+                        #region выдача прокси
+                        //if (request.Proxy != null)
+                        //{
+                        //    string Host = request.Proxy.Host.ToString(),
+                        //        Port = request.Proxy.Port.ToString();
 
-                            if (request.Proxy.Host != null && request.Proxy.Username == null)
-                            {
+                        //    if (request.Proxy.Host != null && request.Proxy.Username == null)
+                        //    {
 
-                                switch (request.Proxy.Type.ToString())
-                                {
-                                    case "HTTP":
-                                        client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
-                                        break;
-                                    case "Socks4":
-                                        client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
-                                        break;
-                                    case "Socks5":
-                                        client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
-                                        break;
-                                }
-                            }
-                            if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
-                            {
-                                var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
+                        //        switch (request.Proxy.Type.ToString())
+                        //        {
+                        //            case "HTTP":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
+                        //                break;
+                        //            case "Socks4":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
+                        //                break;
+                        //            case "Socks5":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
+                        //                break;
+                        //        }
+                        //    }
+                        //    if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
+                        //    {
+                        //        var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
 
-                                switch (request.Proxy.Type.ToString())
-                                {
-                                    case "HTTP":
-                                        client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
-                                        break;
-                                    case "Socks4":
-                                        client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
-                                        break;
-                                    case "Socks5":
-                                        client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
-                                        break;
-                                }
-                            }
-                        }
+                        //        switch (request.Proxy.Type.ToString())
+                        //        {
+                        //            case "HTTP":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
+                        //                break;
+                        //            case "Socks4":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
+                        //                break;
+                        //            case "Socks5":
+                        //                client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
+                        //                break;
+                        //        }
+                        //    }
+                        //}
+                        #endregion
 
                         client.ServerCertificateValidationCallback = (object sender,
                         X509Certificate certificate,
                         X509Chain chain,
                         SslPolicyErrors sslPolicyErrors) => true;
 
-                        client.Connect("imap.gmx.net", 993, true);
+                        client.Connect("imap.gmail.com", 993, true);
                         client.Authenticate(Email.Email, Email.Password);
 
                         // Читаем все сообщения
@@ -102,52 +105,54 @@ namespace Live.com_Сombiner
             {
                 using (var client = new ImapClient())
                 {
-                    if (request.Proxy != null)
-                    {
-                        string Host = request.Proxy.Host.ToString(),
-                            Port = request.Proxy.Port.ToString();
+                    #region выдача прокси
+                    //if (request.Proxy != null)
+                    //{
+                    //    string Host = request.Proxy.Host.ToString(),
+                    //        Port = request.Proxy.Port.ToString();
 
-                        if (request.Proxy.Host != null && request.Proxy.Username == null)
-                        {
+                    //    if (request.Proxy.Host != null && request.Proxy.Username == null)
+                    //    {
 
-                            switch (request.Proxy.Type.ToString())
-                            {
-                                case "HTTP":
-                                    client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
-                                    break;
-                                case "Socks4":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
-                                    break;
-                                case "Socks5":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
-                                    break;
-                            }
-                        }
-                        if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
-                        {
-                            var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
+                    //        switch (request.Proxy.Type.ToString())
+                    //        {
+                    //            case "HTTP":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port));
+                    //                break;
+                    //            case "Socks4":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port));
+                    //                break;
+                    //            case "Socks5":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port));
+                    //                break;
+                    //        }
+                    //    }
+                    //    if (request.Proxy.Host != null && request.Proxy.Username != null && request.Proxy.Password != null)
+                    //    {
+                    //        var nc = new NetworkCredential(request.Proxy.Username.ToString(), request.Proxy.Password.ToString());
 
-                            switch (request.Proxy.Type.ToString())
-                            {
-                                case "HTTP":
-                                    client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
-                                    break;
-                                case "Socks4":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
-                                    break;
-                                case "Socks5":
-                                    client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
-                                    break;
-                            }
-                        }
-                    }
+                    //        switch (request.Proxy.Type.ToString())
+                    //        {
+                    //            case "HTTP":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.HttpProxyClient(Host, int.Parse(Port), nc);
+                    //                break;
+                    //            case "Socks4":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.Socks4Client(Host, int.Parse(Port), nc);
+                    //                break;
+                    //            case "Socks5":
+                    //                client.ProxyClient = new MailKit.Net.Proxy.Socks5Client(Host, int.Parse(Port), nc);
+                    //                break;
+                    //        }
+                    //    }
+                    //}
+                    #endregion
 
                     client.ServerCertificateValidationCallback = (object sender,
                     X509Certificate certificate,
                     X509Chain chain,
                     SslPolicyErrors sslPolicyErrors) => true;
 
-                    client.Connect("imap.gmx.net", 993, true);
+                    client.Connect("imap.gmail.com", 993, true);
                     client.Authenticate(Email.Email, Email.Password);
 
                     var inbox = client.Inbox;

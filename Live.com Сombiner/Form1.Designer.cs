@@ -97,13 +97,13 @@ namespace Live.com_Сombiner
             this.NameSurnameBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2HtmlLabel15 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2GroupBox5 = new Guna.UI2.WinForms.Guna2GroupBox();
+            this.BadProxyLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.InvalidEmailLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.NumberErrorLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.InvalidRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.GoodRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.UsedRegistrationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            this.InvalidEmailLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.BadProxyLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.guna2GroupBox1.SuspendLayout();
@@ -1227,12 +1227,30 @@ namespace Live.com_Сombiner
             this.guna2GroupBox5.TabIndex = 66;
             this.guna2GroupBox5.Text = "Статистика  регистрации";
             // 
+            // BadProxyLabel
+            // 
+            this.BadProxyLabel.BackColor = System.Drawing.Color.Transparent;
+            this.BadProxyLabel.Location = new System.Drawing.Point(26, 302);
+            this.BadProxyLabel.Name = "BadProxyLabel";
+            this.BadProxyLabel.Size = new System.Drawing.Size(234, 33);
+            this.BadProxyLabel.TabIndex = 5;
+            this.BadProxyLabel.Text = "Грязных прокси: 0";
+            // 
+            // InvalidEmailLabel
+            // 
+            this.InvalidEmailLabel.BackColor = System.Drawing.Color.Transparent;
+            this.InvalidEmailLabel.Location = new System.Drawing.Point(26, 253);
+            this.InvalidEmailLabel.Name = "InvalidEmailLabel";
+            this.InvalidEmailLabel.Size = new System.Drawing.Size(253, 33);
+            this.InvalidEmailLabel.TabIndex = 4;
+            this.InvalidEmailLabel.Text = "Не валидных Mail: 0";
+            // 
             // NumberErrorLabel
             // 
             this.NumberErrorLabel.BackColor = System.Drawing.Color.Transparent;
             this.NumberErrorLabel.Location = new System.Drawing.Point(26, 204);
             this.NumberErrorLabel.Name = "NumberErrorLabel";
-            this.NumberErrorLabel.Size = new System.Drawing.Size(242, 43);
+            this.NumberErrorLabel.Size = new System.Drawing.Size(222, 33);
             this.NumberErrorLabel.TabIndex = 3;
             this.NumberErrorLabel.Text = "Требует номер: 0";
             // 
@@ -1241,7 +1259,7 @@ namespace Live.com_Сombiner
             this.InvalidRegistrationLabel.BackColor = System.Drawing.Color.Transparent;
             this.InvalidRegistrationLabel.Location = new System.Drawing.Point(26, 155);
             this.InvalidRegistrationLabel.Name = "InvalidRegistrationLabel";
-            this.InvalidRegistrationLabel.Size = new System.Drawing.Size(200, 43);
+            this.InvalidRegistrationLabel.Size = new System.Drawing.Size(185, 33);
             this.InvalidRegistrationLabel.TabIndex = 2;
             this.InvalidRegistrationLabel.Text = "Не успешно: 0";
             // 
@@ -1250,7 +1268,7 @@ namespace Live.com_Сombiner
             this.GoodRegistrationLabel.BackColor = System.Drawing.Color.Transparent;
             this.GoodRegistrationLabel.Location = new System.Drawing.Point(26, 107);
             this.GoodRegistrationLabel.Name = "GoodRegistrationLabel";
-            this.GoodRegistrationLabel.Size = new System.Drawing.Size(157, 43);
+            this.GoodRegistrationLabel.Size = new System.Drawing.Size(146, 33);
             this.GoodRegistrationLabel.TabIndex = 1;
             this.GoodRegistrationLabel.Text = "Успешно: 0";
             // 
@@ -1259,7 +1277,7 @@ namespace Live.com_Сombiner
             this.UsedRegistrationLabel.BackColor = System.Drawing.Color.Transparent;
             this.UsedRegistrationLabel.Location = new System.Drawing.Point(26, 58);
             this.UsedRegistrationLabel.Name = "UsedRegistrationLabel";
-            this.UsedRegistrationLabel.Size = new System.Drawing.Size(199, 43);
+            this.UsedRegistrationLabel.Size = new System.Drawing.Size(183, 33);
             this.UsedRegistrationLabel.TabIndex = 0;
             this.UsedRegistrationLabel.Text = "Отработано: 0";
             // 
@@ -1277,24 +1295,6 @@ namespace Live.com_Сombiner
             this.guna2Button1.TabIndex = 67;
             this.guna2Button1.Text = "guna2Button1";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
-            // 
-            // InvalidEmailLabel
-            // 
-            this.InvalidEmailLabel.BackColor = System.Drawing.Color.Transparent;
-            this.InvalidEmailLabel.Location = new System.Drawing.Point(26, 253);
-            this.InvalidEmailLabel.Name = "InvalidEmailLabel";
-            this.InvalidEmailLabel.Size = new System.Drawing.Size(275, 43);
-            this.InvalidEmailLabel.TabIndex = 4;
-            this.InvalidEmailLabel.Text = "Не валидных Mail: 0";
-            // 
-            // BadProxyLabel
-            // 
-            this.BadProxyLabel.BackColor = System.Drawing.Color.Transparent;
-            this.BadProxyLabel.Location = new System.Drawing.Point(26, 302);
-            this.BadProxyLabel.Name = "BadProxyLabel";
-            this.BadProxyLabel.Size = new System.Drawing.Size(253, 43);
-            this.BadProxyLabel.TabIndex = 5;
-            this.BadProxyLabel.Text = "Грязных прокси: 0";
             // 
             // Form1
             // 

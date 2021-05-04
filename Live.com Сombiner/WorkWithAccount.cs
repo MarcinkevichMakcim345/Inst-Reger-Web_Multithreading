@@ -233,6 +233,10 @@ namespace Live.com_Сombiner
                     string INTERSTITIAL = Response.BetweenOrEmpty("INTERSTITIAL:'", "'");
                     string PAGE_TOP = Response.BetweenOrEmpty("PAGE_TOP:'", "'");
                     string TOOLTIP = Response.BetweenOrEmpty("TOOLTIP:'", "'");
+
+                    string viewer = Response.BetweenOrEmpty("m.exports=\"", "\"") + "\"";
+                    string surfaces_to_queries = $"{{\"{PAGE_TOP}\":\"{viewer},\"{INTERSTITIAL}\":\"{viewer},\"{TOOLTIP}\":\"{viewer}}}";
+                    string doc_id = Response.BetweenOrEmpty("{BANNER:'1',MODAL:'2'}", ";").BetweenOrEmpty("n='", "'");
                     #endregion
 
                     #region Делаем Get запрос для парсинга Params bloks_versioning_id
@@ -258,30 +262,27 @@ namespace Live.com_Сombiner
                     string bloks_versioning_id = request.Get(ConsumerUICommons).ToString().BetweenOrEmpty("e.VERSIONING_ID=\"", "\"");
                     #endregion
 
-                    #region Делаем Get запрос для парсинга viewer
-                    request.AddHeader("Referer", "https://www.instagram.com/");
-                    request.AddHeader("Accept", "*/*");
-                    request.AddHeader("DNT", "1");
+                      #region Делаем Get запрос для парсинга viewer
+                    //request.AddHeader("Referer", "https://www.instagram.com/");
+                    //request.AddHeader("Accept", "*/*");
+                    //request.AddHeader("DNT", "1");
 
-                    #region Порядок Хэдеров
-                    request.AddHeadersOrder(new List<string>()
-                    {
-                    "Host",
-                    "User-Agent",
-                    "Accept",
-                    "Accept-Language",
-                    "DNT",
-                    "Connection",
-                    "Upgrade-Insecure-Requests",
-                    "Accept-Encoding"
-                    });
-                    #endregion
+                    //#region Порядок Хэдеров
+                    //request.AddHeadersOrder(new List<string>()
+                    //{
+                    //"Host",
+                    //"User-Agent",
+                    //"Accept",
+                    //"Accept-Language",
+                    //"DNT",
+                    //"Connection",
+                    //"Upgrade-Insecure-Requests",
+                    //"Accept-Encoding"
+                    //});
+                    //#endregion
 
-                    Thread.Sleep(rand.Next(minPause, maxPause));
-                    Response = request.Get(Consumer).ToString();
-                    string viewer = Response.BetweenOrEmpty("m.exports=\"", "\"") + "\"";
-                    string surfaces_to_queries = $"{{\"{PAGE_TOP}\":\"{viewer},\"{INTERSTITIAL}\":\"{viewer},\"{TOOLTIP}\":\"{viewer}}}";
-                    string doc_id = Response.BetweenOrEmpty("{BANNER:'1',MODAL:'2'}", ";").BetweenOrEmpty("n='", "'");
+                    //Thread.Sleep(rand.Next(minPause, maxPause));
+                    //Response = request.Get(Consumer).ToString();
                     #endregion
 
                     #region Парсим MID данные для encrypt и куки.

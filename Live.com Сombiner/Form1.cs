@@ -358,9 +358,15 @@ namespace Live.com_Сombiner
             return false;
         }
         #endregion
+        (string email, string password) mail = ("MarkAdams1339767@gmail.com", "KJDC553tqIJ");
+        HttpRequest request = new HttpRequest();
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            
+            request.Proxy = null;
+            new Thread((MethodInvoker) => { 
+                //GetMailKit.ReadMessages(mail, "", request);
+                MessageBox.Show(GetMailKit.GetCode(mail, "", request));
+            }).Start();
         }
     }
 }
